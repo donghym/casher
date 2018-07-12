@@ -52,18 +52,27 @@
         <router-view/>
       </el-main>
       <el-footer>
-        底部栏
+        <div class="sum-price">
+          <p><span>已选购</span><strong>{{computeOrder.goodsNum}} </strong><em>件商品</em>
+            <span>商品总价：</span><strong>{{computeOrder.goodsPrice}} 元</strong></p>
+         </div>
       </el-footer>
     </el-container>
   </el-container>
 </template>
 <script> 
+import {mapGetters} from 'vuex';
  export default {
     data() {
       return {
         isCollapse: true,
         width:'64px'
       };
+    },
+    computed:{
+        ...mapGetters([
+            "computeOrder"
+        ])
     },
     methods: {
       handleOpen(key, keyPath) {
@@ -80,32 +89,19 @@
   }
 </script>
 <style scoped>  
-.logo{
-  height: 60px;
-  border-bottom: solid 1px #ccc;
-  display: flex; 
-  align-items: center;
-  justify-content:  center;
-}
-.el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
-  }
-  
-  .el-aside {
-    color: #333;
-  }
-  
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-  }
-  
-  #app>.el-container {
-    margin-bottom: 40px;
-    height: 100%;
-  }
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    overflow:hidden;
-  }
+.logo{height: 60px;border-bottom: solid 1px #ccc;display: flex;align-items: center;justify-content: center;}
+.el-header{background-color: #B3C0D1;color: #333;}
+.el-footer{background-color: #f0f0f0;}
+.el-aside{color: #333;}
+.el-main{background-color: #f9f9f9;color: #333;}
+#app>.el-container{margin-bottom: 40px;height: 100%;}
+.el-menu-vertical-demo:not(.el-menu--collapse){overflow:hidden;}
+.comm-right{height: 52px;border: 1px solid #f0f0f0;color: #999;}
+.sum-price{font-size: 16px;line-height: 52px;}
+.sum-price p{text-align: right;}
+.sum-price p span{color: #333}
+.sum-price p em{color: #333;margin-right: 40px;font-style:normal;}
+
+.sum-price p strong{color: #e4393c;font-weight: bolder; font-size:22px;margin: 0 6px;}
+
 </style>

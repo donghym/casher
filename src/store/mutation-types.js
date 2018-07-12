@@ -1,0 +1,1 @@
+export const COMPUTESINGLEPRICE = 'COMPUTESINGLEPRICE' // 订单单品总价

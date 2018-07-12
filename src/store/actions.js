@@ -1,8 +1,7 @@
 const actions = {
 	changeGoodsNum:(context,payload)=>{
-		context.commit('computeSinglePrice',payload)
+		context.commit('COMPUTESINGLEPRICE',payload)
 	}
 }
-
 export default actions
 

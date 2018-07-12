@@ -3,7 +3,7 @@ import vuex from 'vuex';
 import state from './state.js';
 import getters from './getters.js';
 
-import mutation from './mutation';
+import mutations from './mutations';
 import actions from './actions.js';
 import cart from './modules/cart.js';
 import products from './modules/products.js';
@@ -16,7 +16,7 @@ export default new vuex.Store({
     state,
     getters,
     actions,
-    mutation,
+    mutations,
     modules: {
         cart,
         products

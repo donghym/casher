@@ -2,7 +2,12 @@
 	<header>
 		<el-row :gutter="20">
 	  		<el-col :span="6" :offset="18">
-				<el-input placeholder="请输入条形码" ref='barcode' v-model="productId" class="input-with-select" clearable  :autofocus="true"  @keyup.107.native="onAdd">
+				<el-input 
+					placeholder="请输入条形码" ref='barcode' v-model="productId"
+					class="input-with-select" clearable  :autofocus="true"  
+					@keyup.107.native="valueChange(true)"  @keyup.109.native="valueChange(false)"
+					@keyup.13.native="productIdenter"
+					>
 				    <el-button slot="append" icon="el-icon-tickets" @click="showArchives"></el-button>
 				</el-input>
 		  	</el-col>
@@ -94,17 +99,33 @@
 	    		let {data} = await getarchives()
 	    		this.$store.state.archivesList = data
 	    	},
-	    	onAdd(){
-	    		let {orderCurrent,orderList} = this.$store.state
-	    		debugger
-    			if(!orderCurrent.id && orderList.length){
-    				orderCurrent = orderList[orderList.length-1]
-	    		}
-	    		console.log(orderCurrent)
-	    		if(!orderCurrent){
+	    	valueChange(state){
+	    		let {index,orderList} = this.$store.state
+	    		if(!orderList.length){
 	    			return false
 	    		}
-	    		orderCurrent.orderNum++
+	    		let productId = this.productId;
+	    		this.productId =productId.substring(0,productId.Length-1)
+	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
+	      		this.$store.dispatch('changeGoodsNum',{index:index,value:_value})
+	    	},
+	    	productIdenter(){
+	    		const isNum = (num)=> /^\d+$/.test(num)
+	    		const isMultiplication = (num) => /^\*(\d+)$/.test(num)
+	    		let productId = this.productId
+	    		if(isNum(productId)){
+	    			// 正常的条形码
+	    		}else if(isMultiplication(this.productId)){
+		    		let {index,orderList} = this.$store.state
+		    		if(!orderList.length){
+		    			return false
+		    		}
+		    		let _value = this.productId;
+		    		_value=_value.substr(1,_value.length-1);
+		      		this.$store.dispatch('changeGoodsNum',{index:index,value:Number(_value)})
+	    		}else{
+	    		}
+    			this.productId=null
 	    	},
 	    	showArchives(){
 	    		this.$store.state.archivesShow=true
@@ -113,7 +134,7 @@
 	        	this.$store.state.archivesCurrent = val;
 	      	},
 	      	handdleSure(){
-	      		let {archivesCurrent,orderCurrent,orderList} = this.$store.state;
+	      		let {archivesCurrent,orderList,index} = this.$store.state;
 		      	if(!archivesCurrent.id){
 			        this.$message({
 			          message: '请选择商品',
@@ -122,11 +143,12 @@
 			        return false
 		      	}
 		      	// 判断 orderList 是否含有ordercurent
-	        	orderCurrent = Object.assign({},archivesCurrent,{
+	        	let orderCurrent = Object.assign({},archivesCurrent,{
 	        		orderNum:1,
 	        		SingleTotalPrice:archivesCurrent.price
 	        	})
 	        	orderList.push(orderCurrent)
+        	 	this.$store.state.index= orderList.length-1
 	        	this.$refs.barcode.$el.querySelector('input').focus();
 	      		this.handdleCancel()
 	     	},
@@ -143,7 +165,7 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-	header{border-bottom:solid 1px #ccc; height:48px;}
+	header{height:48px;}
 	.el-dialog__body{padding: 0 10px 10px}
 	.el-table__body tr.current-row>td{background-color: #ff00ff;}
 	.page{padding-bottom: 10px;}
