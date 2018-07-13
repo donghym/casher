@@ -3,8 +3,9 @@
 		<refer></refer>
 		<div class="order">
 			<el-row :gutter="20" class='order-list-title'>
+			  	<el-col :span="1"><div>序号</div></el-col>
 			  	<el-col :span="2"><div>商品编码</div></el-col>
-			  	<el-col :span="4"><div>商品名称</div></el-col>
+			  	<el-col :span="3"><div>商品名称</div></el-col>
 			  	<el-col :span="2"><div>单品价格</div></el-col>
 			  	<el-col :span="3"><div>数量</div></el-col>
 			  	<el-col :span="3"><div>单品总价</div></el-col>
@@ -14,8 +15,9 @@
 			</el-row>
 			<div class='order-list'>
 				<el-row :gutter="20" v-for="(item, index) in $store.state.orderList"  :class="{ 'order-list-con':true, 'on':($store.state.index==index)}" :key='index' @click.native='changeIndex(index)'>
+				  	<el-col :span="1"><div>{{index+1}}</div></el-col>
 				  	<el-col :span="2"><div>{{item.id}}</div></el-col>
-				  	<el-col :span="4"><div>{{item.name}}</div></el-col>
+				  	<el-col :span="3"><div>{{item.name}}</div></el-col>
 			  		<el-col :span="2"><div>{{item.price}}</div></el-col>
 				  	<el-col :span="3"><div>
 			  		 	<el-input-number v-model="item.orderNum" size="medium" @change="value=>handleChange(value,index)" :min="0" :max="100" label="描述文字"></el-input-number>

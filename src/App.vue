@@ -16,6 +16,8 @@ html,body,#app{
   width: 100%;
 }
 *{padding: 0;margin: 0;box-sizing: border-box;}
+.clearfix:before,.clearfix:after{display: table;content: ''}
+.clearfix:after{clear:both;}
 a{text-decoration: none;}
 .text-center{text-align: center}
 #app {
