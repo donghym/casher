@@ -29,7 +29,7 @@
           <i class="el-icon-menu"></i>
           <span slot="title">档案</span>
         </el-menu-item>
-        <el-menu-item index="/home/cash">
+        <el-menu-item index="/home/order">
           <i class="el-icon-document"></i>
           <span slot="title">售货</span>
         </el-menu-item>

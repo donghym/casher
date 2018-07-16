@@ -137,9 +137,7 @@
       		 	this.$refs.multipleTable.toggleRowSelection(row);
 	      	},
 	      	handdleSure(){
-	      		let {orderList,index} = this.$store.state.order;
-	      		debugger
-		      	if(this.archivesCurrent.length){
+		      	if(!this.archivesCurrent.length){
 			        this.$message({
 			          message: '请选择商品',
 			          type: 'warning'
@@ -151,9 +149,7 @@
 		      		v.SingleTotalPrice=v.price
 		      		return v
 		      	})
-		      	orderList = orderList.concat(this.archivesCurrent)
-		      	this.$store.state.refer.orderList=orderList
-        	 	this.$store.state.refer.index= orderList.length-1
+	    		this.$store.commit('ADDGOODSTOORDER',{orderList:this.archivesCurrent})
 	        	this.$refs.barcode.$el.querySelector('input').focus();
 	      		this.handdleCancel()
 	     	},

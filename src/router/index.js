@@ -4,7 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/login'
 import Home from '@/components/home/Home'
 import Index from '@/components/home/index'
-import Cash from '@/components/home/cash'
+import Order from '@/components/home/order'
 import Archives from '@/components/home/archives'
 import Refer from '@/components/home/refer'
 
@@ -18,7 +18,7 @@ export default new Router({
       component: Home,
       children: [
         {path: '/home',  component: Index},
-        {path: '/home/cash',  component: Cash},
+        {path: '/home/order',  component: Order},
         {path: '/home/archives',  component: Archives},
         {path: '/home/refer',  component: Refer},
       ]

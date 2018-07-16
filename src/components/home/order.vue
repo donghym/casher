@@ -14,16 +14,21 @@
 			  	<el-col :span="3"><div>操作</div></el-col>
 			</el-row>
 			<div class='order-list'>
-				<el-row :gutter="20" v-for="(item, index) in $store.state.orderList"  :class="{ 'order-list-con':true, 'on':($store.state.index==index)}" :key='index' @click.native='changeIndex(index)'>
+				<el-row :gutter="20" v-for="(item, index) in $store.state.order.orderList"  :class="{ 'order-list-con':true, 'on':($store.state.order.index==index)}" :key='index' @click.native='changeIndex(index)'>
 				  	<el-col :span="1"><div>{{index+1}}</div></el-col>
 				  	<el-col :span="2"><div>{{item.id}}</div></el-col>
 				  	<el-col :span="3"><div>{{item.name}}</div></el-col>
 			  		<el-col :span="2"><div>{{item.price}}</div></el-col>
 				  	<el-col :span="3"><div>
-			  		 	<el-input-number v-model="item.orderNum" size="medium" @change="value=>handleChange(value,index)" :min="0" :max="100" label="描述文字"></el-input-number>
+			  		 	<!-- <el-input-number v-model="item.orderNum" size="medium" @change="value=>changeOrderNum(value,index)" :min="0" :max="100" label="描述文字"></el-input-number> -->
+
+				  		<el-input v-model="item.orderNum" type='number' size="medium" placeholder="单品总价" @change="value=>changeOrderNum(value,index)"></el-input>
+
+
 				  	</div></el-col>
 				  	<el-col :span="3"><div>
-				  		<el-input :value="item.SingleTotalPrice" type='number' size="medium" placeholder="单品总价" @change="value=>valuechange(value,index)"></el-input>
+				  		{{item.SingleTotalPrice}}
+				  		<!-- <el-input v-model="item.SingleTotalPrice" type='number' size="medium" placeholder="单品总价" @change="value=>valuechange(value,index)"></el-input> -->
 				  	</div></el-col>
 				  	<el-col :span="2"><div>{{item.discounted ||'0.00'}}</div></el-col>
 				  	<el-col :span="5"><div>{{item.desc}}</div></el-col>
@@ -40,11 +45,6 @@
   	export default {
 	    data() {
 	      return {
-	      	sellcurrentRow:'',//订单列表
-	        orderData:[], // 订单
-	      	currentMapRow:'', //选中的行
-	        archivesData: [], // 商品
-	        tips:false
 	      };
 	    },
 	    components:{
@@ -55,19 +55,16 @@
 	        	this.$store.state.refer.orderList.splice(index, 1);
 	      	},
 	      	valuechange(value,index){
+
 	      		let {orderList} = this.$store.state.refer;
 	      		orderList[index].SingleTotalPrice=Number(value)
 	      	},
 	      	changeIndex(index){
-	      		this.$store.state.refer.index=index
+	      		// this.$store.state.refer.index=index
 	        	// this.$refs.barcode.$el.querySelector('input').focus();
 	      	},
-	      	handleChange(value,index){
-	      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:value})
-	      	},
-	      	current(e){
-	      		console.log(e)
-	      		debugger
+	      	changeOrderNum(value,index){
+	      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:Number(value)})
 	      	}
 	    }
  	}
