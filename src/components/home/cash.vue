@@ -52,18 +52,18 @@
 	    },
 	    methods: {
 	      	deleteRow(index) {
-	        	this.$store.state.orderList.splice(index, 1);
+	        	this.$store.state.refer.orderList.splice(index, 1);
 	      	},
 	      	valuechange(value,index){
-	      		let {orderList} = this.$store.state;
+	      		let {orderList} = this.$store.state.refer;
 	      		orderList[index].SingleTotalPrice=Number(value)
 	      	},
 	      	changeIndex(index){
-	      		this.$store.state.index=index
+	      		this.$store.state.refer.index=index
 	        	// this.$refs.barcode.$el.querySelector('input').focus();
 	      	},
 	      	handleChange(value,index){
-	      		this.$store.dispatch('changeGoodsNum',{index:index,value:value})
+	      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:value})
 	      	},
 	      	current(e){
 	      		console.log(e)

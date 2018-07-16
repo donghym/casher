@@ -52,11 +52,11 @@
         <router-view/>
       </el-main>
       <div class="sum-price">
-        <p>
+       <!--  <p>
           <span>已选购</span><strong>{{computeOrder.goodsNum}} </strong><em>件商品</em>
           <span>商品总价：</span><strong>{{computeOrder.goodsPrice}} 元</strong>
           <a>结算</a>
-        </p>
+        </p> -->
        </div>
     </el-container>
   </el-container>

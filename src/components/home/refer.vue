@@ -23,13 +23,14 @@
 				</el-input>
 		  	</el-col>
 		</el-row>
-		<el-dialog title="档案列表" :visible.sync="$store.state.archivesShow">
+		<el-dialog title="档案列表" :visible.sync="$store.state.refer.archivesShow">
 			<el-table
 			    ref="multipleTable"
 			    tooltip-effect="dark"
-			    :data="this.$store.state.archivesList"
+			    :data="this.$store.state.refer.archivesList"
 			    border highlight-current-row
 		     	@selection-change="handleSelectionChange"
+		     	@cell-click="changeSelectIndex"
 			    size='small'
 			    max-height='300'
 			    style="width: 100%">
@@ -41,36 +42,6 @@
 			    <el-table-column
 			      type="index">
 			    </el-table-column>
-			   <!--  <el-table-column type="expand">
-			      <template slot-scope="props">
-			        <el-form label-position="left" inline class="demo-table-expand">
-						<el-form-item label="商品名称">
-							<span>{{ props.row.name}}</span>
-						</el-form-item>
-						<el-form-item label="商品 ID">
-							<span>{{ props.row.id}}</span>
-						</el-form-item>
-						<el-form-item label="单价">
-							<span>{{ props.row.price}}</span>
-						</el-form-item>
-						<el-form-item label="团购">
-							<span>{{ props.row.groupPrice}}</span>
-						</el-form-item>
-						<el-form-item label="团购数量">
-							<span>{{ props.row.groupNum }}</span>
-						</el-form-item>
-						<el-form-item label="商品分类">
-							<span>{{ props.row.category }}</span>
-						</el-form-item>
-						<el-form-item label="店铺地址">
-							<span>{{ props.row.address }}</span>
-						</el-form-item>
-						<el-form-item label="商品描述">
-							<span>{{ props.row.desc }}</span>
-						</el-form-item>
-			        </el-form>
-			      </template>
-			    </el-table-column> -->
 			    <el-table-column
 			      label="商品ID"
 			      prop="id">
@@ -120,22 +91,23 @@
 	    data() {
 	      return {
 	      	productId:'',  // 商品ID
+	      	archivesCurrent:[]
 	      };
 	    },
 	    methods: {
 	    	async init(){
 	    		let {data} = await getarchives()
-	    		this.$store.state.archivesList = data
+	    		this.$store.state.refer.archivesList = data
 	    	},
 	    	valueChange(state){
-	    		let {index,orderList} = this.$store.state
+	    		let {index,orderList} = this.$store.state.refer
 	    		if(!orderList.length){
 	    			return false
 	    		}
 	    		let productId = this.productId;
 	    		this.productId =productId.substring(0,productId.Length-1)
 	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
-	      		this.$store.dispatch('changeGoodsNum',{index:index,value:_value})
+	      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:_value})
 	    	},
 	    	productIdenter(){
 	    		const isNum = (num)=> /^\d+$/.test(num)
@@ -144,47 +116,50 @@
 	    		if(isNum(productId)){
 	    			// 正常的条形码
 	    		}else if(isMultiplication(this.productId)){
-		    		let {index,orderList} = this.$store.state
+		    		let {index,orderList} = this.$store.state.refer
 		    		if(!orderList.length){
 		    			return false
 		    		}
 		    		let _value = this.productId;
 		    		_value=_value.substr(1,_value.length-1);
-		      		this.$store.dispatch('changeGoodsNum',{index:index,value:Number(_value)})
+		      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:Number(_value)})
 	    		}else{
 	    		}
     			this.productId=null
 	    	},
 	    	showArchives(){
-	    		this.$store.state.archivesShow=true
+	    		this.$store.state.refer.archivesShow=true
 	    	},
 	      	handleSelectionChange(val) {
-	        	this.$store.state.archivesCurrent = val;
+	        	this.archivesCurrent = val;
+	      	},
+	      	changeSelectIndex(row){
+      		 	this.$refs.multipleTable.toggleRowSelection(row);
 	      	},
 	      	handdleSure(){
-	      		let {archivesCurrent,orderList,index} = this.$store.state;
-		      	if(!archivesCurrent.length){
+	      		let {orderList,index} = this.$store.state.order;
+	      		debugger
+		      	if(this.archivesCurrent.length){
 			        this.$message({
 			          message: '请选择商品',
 			          type: 'warning'
 			        });
 			        return false
 		      	}
-		      	archivesCurrent.map(v=>{
+		      	this.archivesCurrent.map(v=>{
 		      		v.orderNum=1
 		      		v.SingleTotalPrice=v.price
 		      		return v
 		      	})
-		      	orderList = orderList.concat(archivesCurrent)
-		      	this.$store.state.orderList=orderList
-        	 	this.$store.state.index= orderList.length-1
+		      	orderList = orderList.concat(this.archivesCurrent)
+		      	this.$store.state.refer.orderList=orderList
+        	 	this.$store.state.refer.index= orderList.length-1
 	        	this.$refs.barcode.$el.querySelector('input').focus();
 	      		this.handdleCancel()
 	     	},
 	      	handdleCancel(){
-	      		const {state} = this.$store
-	      		state.archivesShow = false
-	        	state.archivesCurrent = [];
+	      		const {refer} = this.$store.state
+	      		refer.archivesShow = false
 				this.$refs.multipleTable.clearSelection();
 	      	}
 	    },

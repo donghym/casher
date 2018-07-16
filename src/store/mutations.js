@@ -1,5 +1,4 @@
 import {COMPUTESINGLEPRICE} from './mutation-types'
-
 export default {
 	 [COMPUTESINGLEPRICE](state,{value,index} ){
   		let {orderList} = state;
