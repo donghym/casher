@@ -20,15 +20,10 @@
 				  	<el-col :span="3"><div>{{item.name}}</div></el-col>
 			  		<el-col :span="2"><div>{{item.price}}</div></el-col>
 				  	<el-col :span="3"><div>
-			  		 	<!-- <el-input-number v-model="item.orderNum" size="medium" @change="value=>changeOrderNum(value,index)" :min="0" :max="100" label="描述文字"></el-input-number> -->
-
-				  		<el-input v-model="item.orderNum" type='number' size="medium" placeholder="单品总价" @change="value=>changeOrderNum(value,index)"></el-input>
-
-
+			  		 	<el-input-number v-model="item.orderNum" size="medium" @change="value=>changeOrderNum(value,index)" :min="0" :max="100" label="描述文字"></el-input-number>
 				  	</div></el-col>
 				  	<el-col :span="3"><div>
-				  		{{item.SingleTotalPrice}}
-				  		<!-- <el-input v-model="item.SingleTotalPrice" type='number' size="medium" placeholder="单品总价" @change="value=>valuechange(value,index)"></el-input> -->
+				  		<el-input v-model="item.singletotalprice" type='number' size="medium" placeholder="单品总价" @change="value=>valuechange(value,index)"></el-input>
 				  	</div></el-col>
 				  	<el-col :span="2"><div>{{item.discounted ||'0.00'}}</div></el-col>
 				  	<el-col :span="5"><div>{{item.desc}}</div></el-col>
@@ -57,14 +52,15 @@
 	      	valuechange(value,index){
 
 	      		let {orderList} = this.$store.state.refer;
-	      		orderList[index].SingleTotalPrice=Number(value)
+	      		orderList[index].singletotalprice=Number(value)
 	      	},
 	      	changeIndex(index){
 	      		// this.$store.state.refer.index=index
 	        	// this.$refs.barcode.$el.querySelector('input').focus();
 	      	},
 	      	changeOrderNum(value,index){
-	      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:Number(value)})
+	      		// debugger
+	      		this.$store.commit('CHANGEORDERNUMBER',{index,value})
 	      	}
 	    }
  	}

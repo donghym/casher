@@ -146,10 +146,10 @@
 		      	}
 		      	this.archivesCurrent.map(v=>{
 		      		v.orderNum=1
-		      		v.SingleTotalPrice=v.price
+		      		v.singletotalprice=v.price
 		      		return v
 		      	})
-	    		this.$store.commit('ADDGOODSTOORDER',{orderList:this.archivesCurrent})
+	    		this.$store.commit('ADDGOODSTOORDER',{orderList:JSON.parse(JSON.stringify(this.archivesCurrent))})
 	        	this.$refs.barcode.$el.querySelector('input').focus();
 	      		this.handdleCancel()
 	     	},

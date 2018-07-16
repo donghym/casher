@@ -5,29 +5,49 @@ export default {
 		goodsCategory: [], //订单商品列表里的种类
 		index: 0 //订单列表选中行
 	},
+    getters:{
+        computeOrder:(state)=>{
+            const {orderList} = state
+            if(!orderList.length){
+                return {
+                    goodsNum:0,
+                    goodsPrice:0,
+                }
+            }else{
+                let goodsNum=0
+                let goodsPrice=0
+                orderList.forEach(v=>{
+                    goodsNum= v.orderNum+goodsNum
+                    goodsPrice= Number(v.singletotalprice)+goodsPrice
+                })
+                return {
+                    goodsNum:goodsNum,
+                    goodsPrice:goodsPrice.toFixed(2),
+                }
+            }
+        }
+    },
     mutations:{
     	[ADDGOODSTOORDER](state,{orderList}){
     		state.orderList = state.orderList.concat(orderList)
     		state.index = state.orderList.length
     	},
         [CHANGEORDERNUMBER](state,{value,index}){
-            let {orderList} = state;
+            let orderList =  [].concat(state.orderList);
             if(!value){
                 orderList = orderList.splice(index,1)
                 return false
             }
-            let currentOrder = orderList[index]
+            const currentOrder = orderList[index]
             currentOrder.orderNum = value
             if(value>=currentOrder.groupNum){
-                currentOrder.SingleTotalPrice = (currentOrder.groupPrice/currentOrder.groupNum)*value.toFixed(2)
+                currentOrder.singletotalprice = (currentOrder.groupPrice/currentOrder.groupNum)*value.toFixed(2)
             }else{
-                currentOrder.SingleTotalPrice = (currentOrder.price*value).toFixed(2)
+                currentOrder.singletotalprice = (currentOrder.price*value).toFixed(2)
+                currentOrder.discounted = (currentOrder.price*value-Number(currentOrder.singletotalprice)).toFixed(2)
             }
-            currentOrder.discounted = (currentOrder.price*value-currentOrder.SingleTotalPrice).toFixed(2)
-            state.orderList[index] = currentOrder
-            // state.orderList[index].name='454'+value
+            state.orderList = orderList
         }
-
     },
     actions:{
     }
