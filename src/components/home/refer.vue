@@ -1,13 +1,15 @@
 <template>
 	<header class="clearfix">
 		<el-row :gutter="20">
-	  		<el-col :span="2" :offset="16">
+	  		<el-col :span="3" :offset="15">
 	  			<el-form ref="form" label-width="80px">
 				  	<el-form-item label="合并商品">
 				        <el-switch
-				          	v-model='$store.state.mergeOrder'
+				          	v-model='$store.state.order.mergeOrder'
 				          	active-color="#13ce66"
-				          	inactive-color="#ff4949">
+				          	inactive-color="#ff4949"
+				          	@change="changemarge"
+				          	>
 				        </el-switch>
 				 	</el-form-item>
 			 	</el-form>
@@ -108,6 +110,11 @@
 	    		this.productId =productId.substring(0,productId.Length-1)
 	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
 	      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:_value})
+	    	},
+	    	changemarge(value){
+	    		if(value){
+	    			this.$store.commit('changemarge')
+	    		}
 	    	},
 	    	productIdenter(){
 	    		const isNum = (num)=> /^\d+$/.test(num)
