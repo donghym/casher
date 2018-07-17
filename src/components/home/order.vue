@@ -28,7 +28,7 @@
 				  	<el-col :span="2"><div>{{item.discounted ||'0.00'}}</div></el-col>
 				  	<el-col :span="5"><div>{{item.desc}}</div></el-col>
 				  	<el-col :span="3" class='text-center'>
-						<el-button type="warning"  @click='deleteRow(index)' plain size='mini'>移除</el-button>
+						<el-button type="warning"  @click='deleteOrder(index)' plain size='mini'>移除</el-button>
 				  	</el-col>
 				</el-row>
 			</div>
@@ -46,17 +46,14 @@
 	    	refer
 	    },
 	    methods: {
-	      	deleteRow(index) {
-	        	this.$store.state.refer.orderList.splice(index, 1);
+	      	deleteOrder(index) {
+	      		this.$store.commit('deleteorder',{index})
 	      	},
 	      	valuechange(value,index){
-
-	      		let {orderList} = this.$store.state.refer;
-	      		orderList[index].singletotalprice=Number(value)
+	      		this.$store.commit('changeSingleTotalPrice',{value,index})
 	      	},
 	      	changeIndex(index){
-	      		// this.$store.state.refer.index=index
-	        	// this.$refs.barcode.$el.querySelector('input').focus();
+	      		this.$store.state.order.index=index
 	      	},
 	      	changeOrderNum(value,index){
 	      		// debugger

@@ -1,4 +1,4 @@
-import {CHANGEORDERNUMBER,ADDGOODSTOORDER,CHANGEMARGE} from '../mutation-types'
+import {CHANGEORDERNUMBER,ADDGOODSTOORDER} from '../mutation-types'
 export default {
 	state:{
 		orderList: [], //订单列表
@@ -30,13 +30,18 @@ export default {
     },
     mutations:{
     	[ADDGOODSTOORDER](state,{orderList}){
-    		state.orderList = state.orderList.concat(orderList)
-    		state.index = state.orderList.length
+            let orderlist = state.orderList.concat(orderList)
+    		state.orderList = orderlist
+    		state.index = orderlist.length-1
     	},
         [CHANGEORDERNUMBER](state,{value,index}){
             let {orderList} =  state;
+            let _index = state.index
             if(!value){
-                orderList = orderList.splice(index,1)
+                orderList.splice(index,1)
+                if(_index>orderList.length-1){
+                    state.index = orderList.length-1
+                }
                 return false
             }
             const currentOrder = orderList[index]
@@ -47,17 +52,34 @@ export default {
                 currentOrder.singletotalprice = (currentOrder.price*value).toFixed(2)
                 currentOrder.discounted = (currentOrder.price*value-Number(currentOrder.singletotalprice)).toFixed(2)
             }
-            state.orderList = orderList
         },
         changemarge(state){
             if(state.mergeOrder){
                 let {orderList} = state;
-                orderList=orderList.map(v=>{
-                    
-                })
+                state.orderList = getNew(orderList)
             }
+        },
+        deleteorder(state,{index}){
+            state.orderList.splice(index,1)
+        },
+        changeSingleTotalPrice(state,{value,index}){
+            const {orderList} =  state;
+            orderList[index].singletotalprice = value
+        },
+        changeindex(state,{index}){
+            state.index=index
         }
     },
     actions:{
     }
 }
+var isEqual = (a, b) => a.id === b.id
+var getNew = old => old.reduce((acc, cur) => {
+    let hasItem = acc.some(e => {
+        let temp = isEqual(e, cur); 
+        if (temp) e.orderNum+=cur.orderNum; 
+        return temp; 
+    });
+    if (!hasItem) acc.push(cur)
+    return acc; 
+}, []);

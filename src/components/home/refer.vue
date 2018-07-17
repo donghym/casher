@@ -18,8 +18,13 @@
 				<el-input 
 					placeholder="请输入条形码" ref='barcode' v-model="productId"
 					class="input-with-select" clearable  :autofocus="true"  
-					@keyup.107.native="valueChange(true)"  @keyup.109.native="valueChange(false)"
 					@keyup.13.native="productIdenter"
+					@keyup.37.native="valueChange(false)"
+					@keyup.38.native="keyup(38)"
+					@keyup.39.native="valueChange(true)"
+					@keyup.40.native="keyup(40)"
+					@keyup.107.native="valueChange(true)"  
+					@keyup.109.native="valueChange(false)"
 					>
 				    <el-button slot="append" icon="el-icon-tickets" @click="showArchives"></el-button>
 				</el-input>
@@ -102,14 +107,32 @@
 	    		this.$store.state.refer.archivesList = data
 	    	},
 	    	valueChange(state){
-	    		let {index,orderList} = this.$store.state.refer
+	    		let {index,orderList} = this.$store.state.order
 	    		if(!orderList.length){
 	    			return false
 	    		}
 	    		let productId = this.productId;
 	    		this.productId =productId.substring(0,productId.Length-1)
 	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
-	      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:_value})
+	      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value})
+	        	this.$refs.barcode.$el.querySelector('input').focus();
+	    	},
+	    	keyup(key){
+	    		let {index,orderList} = this.$store.state.order
+	    		if(key===38){
+    				index--
+    			}else if(key===40){
+    				index++
+    			}
+	    		if(index<0) {
+	    			index=0 
+	    			return false
+	    		}
+	    		if(index>orderList.length-1){
+	    			index=orderList.length-1
+	    			return false
+	    		}	
+	    		this.$store.commit('changeindex',{index})
 	    	},
 	    	changemarge(value){
 	    		if(value){
@@ -129,7 +152,7 @@
 		    		}
 		    		let _value = this.productId;
 		    		_value=_value.substr(1,_value.length-1);
-		      		this.$store.refer.dispatch('changeGoodsNum',{index:index,value:Number(_value)})
+		      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:Number(_value)})
 	    		}else{
 	    		}
     			this.productId=null
