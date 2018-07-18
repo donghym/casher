@@ -51,29 +51,16 @@
       <el-main>
         <router-view/>
       </el-main>
-      <div class="sum-price">
-       <!--  <p>
-          <span>已选购</span><strong>{{computeOrder.goodsNum}} </strong><em>件商品</em>
-          <span>商品总价：</span><strong>{{computeOrder.goodsPrice}} 元</strong>
-          <a>结算</a>
-        </p> -->
-       </div>
     </el-container>
   </el-container>
 </template>
 <script> 
-import {mapGetters} from 'vuex';
  export default {
     data() {
       return {
         isCollapse: true,
         width:'64px'
       };
-    },
-    computed:{
-        ...mapGetters([
-            "computeOrder"
-        ])
     },
     methods: {
       handleOpen(key, keyPath) {
@@ -97,12 +84,4 @@ import {mapGetters} from 'vuex';
 #app>.el-container{height: 100%;overflow: hidden;}
 .el-menu-vertical-demo:not(.el-menu--collapse){overflow:hidden;}
 .comm-right{height: 52px;border: 1px solid #f0f0f0;color: #999;}
-.sum-price{font-size: 16px;line-height: 52px;height: 52px;background-color: #f0f0f0;}
-.sum-price p{text-align: right;}
-.sum-price p span{color: #333}
-.sum-price p em{color: #333;margin-right: 40px;font-style:normal;}
-.sum-price p strong{color: #e4393c;font-weight: bolder; font-size:22px;margin: 0 6px;}
-.sum-price p a{display: inline-block; width: 96px; height: 52px; line-height: 52px; color: #fff; text-align: center; font-size: 18px;  background: #e54346; cursor: pointer; margin-left:20px;}
-
-
 </style>

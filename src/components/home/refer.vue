@@ -25,6 +25,7 @@
 					@keyup.40.native="keyup(40)"
 					@keyup.107.native="valueChange(true)"  
 					@keyup.109.native="valueChange(false)"
+					@keyup.110.native="deleteRow"
 					>
 				    <el-button slot="append" icon="el-icon-tickets" @click="showArchives"></el-button>
 				</el-input>
@@ -106,13 +107,18 @@
 	    		let {data} = await getarchives()
 	    		this.$store.state.refer.archivesList = data
 	    	},
+	    	deleteRow(){
+	    		this.productId = ''
+	      		this.$store.commit('deleteorder')
+	    	},
 	    	valueChange(state){
 	    		let {index,orderList} = this.$store.state.order
 	    		if(!orderList.length){
 	    			return false
 	    		}
-	    		let productId = this.productId;
-	    		this.productId =productId.substring(0,productId.Length-1)
+	    		// let productId = this.productId;
+	    		// this.productId =productId.substring(0,productId.Length-1)
+	    		this.productId = ''
 	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
 	      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value})
 	        	this.$refs.barcode.$el.querySelector('input').focus();
@@ -144,6 +150,7 @@
 	    		const isMultiplication = (num) => /^\*(\d+)$/.test(num)
 	    		let productId = this.productId
 	    		if(isNum(productId)){
+	    			console.log('检测条码')
 	    			// 正常的条形码
 	    		}else if(isMultiplication(this.productId)){
 		    		let {index,orderList} = this.$store.state.refer
@@ -154,6 +161,7 @@
 		    		_value=_value.substr(1,_value.length-1);
 		      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:Number(_value)})
 	    		}else{
+
 	    		}
     			this.productId=null
 	    	},

@@ -48,9 +48,9 @@ export default {
             currentOrder.orderNum = value
             if(value>=currentOrder.groupNum){
                 currentOrder.singletotalprice = (currentOrder.groupPrice/currentOrder.groupNum)*value.toFixed(2)
+                currentOrder.discounted = (currentOrder.price*value-Number(currentOrder.singletotalprice)).toFixed(2)
             }else{
                 currentOrder.singletotalprice = (currentOrder.price*value).toFixed(2)
-                currentOrder.discounted = (currentOrder.price*value-Number(currentOrder.singletotalprice)).toFixed(2)
             }
         },
         changemarge(state){
@@ -59,8 +59,12 @@ export default {
                 state.orderList = getNew(orderList)
             }
         },
-        deleteorder(state,{index}){
-            state.orderList.splice(index,1)
+        deleteorder(state,payload){
+            state.orderList.splice(payload?payload.index:state.index,1)
+            let {index,orderList} = state
+            if(index>=state.orderList.length-1){
+                state.index= state.orderList.length-1
+            }
         },
         changeSingleTotalPrice(state,{value,index}){
             const {orderList} =  state;

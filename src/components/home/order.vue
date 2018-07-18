@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<refer></refer>
-		<div class="order">
+		<div class="order" :style="'height:'+orderheight+'px'">
 			<el-row :gutter="20" class='order-list-title'>
 			  	<el-col :span="1"><div>序号</div></el-col>
 			  	<el-col :span="2"><div>商品编码</div></el-col>
@@ -33,18 +33,55 @@
 				</el-row>
 			</div>
 		</div>
+      	<div class="sum-price">
+	        <p>
+	          	<span>已选购</span><strong>{{computeOrder.goodsNum}} </strong><em>件商品</em>
+	          	<span>商品总价：</span><strong>{{computeOrder.goodsPrice}} 元</strong>
+	          	<a>结算</a>
+	        </p>
+       	</div>
 	</div>
 </template>
 <script>
+	import {mapGetters} from 'vuex';
 	import refer from './refer'
   	export default {
 	    data() {
 	      return {
+	      	orderheight:document.documentElement.clientHeight-180,
+	      	fullHeight:document.documentElement.clientHeight
 	      };
 	    },
 	    components:{
 	    	refer
 	    },
+	    computed:{
+	        ...mapGetters([
+	            "computeOrder"
+	        ])
+	    },
+	    mounted() {
+	      	const that = this
+	      	window.onresize = () => {
+	        	return (() => {
+	          		window.fullHeight = document.documentElement.clientHeight
+	          		that.fullHeight = window.fullHeight
+	          		that.orderheight=window.fullHeight-180
+	        	})()
+	      	}
+	    },
+	     watch: {
+      		fullHeight (val) {
+        		if(!this.timer) {
+	          		this.fullHeight = val
+		          	this.timer = true
+		          	let that = this
+	      			setTimeout(function (){
+        				that.timer = false
+      				},400)
+        		}
+      		}
+    	},
 	    methods: {
 	      	deleteOrder(index) {
 	      		this.$store.commit('deleteorder',{index})
@@ -58,8 +95,12 @@
 	      	changeOrderNum(value,index){
 	      		// debugger
 	      		this.$store.commit('CHANGEORDERNUMBER',{index,value})
-	      	}
+	      	},
+	      	handleResize (event) {
+				this.fullHeight = document.documentElement.clientHeight
+			}
 	    }
+
  	}
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -73,4 +114,11 @@
 	.order-list-con>div:not(:last-child){border-right:solid 1px #ccc;}
 	.order-list-con:hover,.order-list-con.on{background-color: #409EFF;color: #fff;font-weight: bold;}
 	.operate{cursor: pointer}
+	.sum-price{font-size: 16px;line-height: 52px;height: 52px;background-color: #f0f0f0;position: fixed;left: 0;bottom: 0;width: 100%;}
+	.sum-price p{text-align: right;}
+	.sum-price p span{color: #333}
+	.sum-price p em{color: #333;margin-right: 40px;font-style:normal;}
+	.sum-price p strong{color: #e4393c;font-weight: bolder; font-size:22px;margin: 0 6px;}
+	.sum-price p a{display: inline-block; width: 96px; height: 52px; line-height: 52px; color: #fff; text-align: center; font-size: 18px;  background: #e54346; cursor: pointer; margin-left:20px;}
+	.order{overflow-x: hidden;padding:0 10px;}
 </style>
