@@ -58,17 +58,20 @@ export default {
             if(state.mergeOrder){
                 let {orderList,index} = state;
                 state.orderList = getNew(orderList)
-                if(_index>state.orderList.length-1){
+                if(index>state.orderList.length-1){
                     state.index = state.orderList.length-1
                 }
             }
         },
-        deleteorder(state,payload){
+        deleteorder(state,payload){//删除当前选中商品
             state.orderList.splice(payload?payload.index:state.index,1)
             let {index,orderList} = state
             if(index>=state.orderList.length-1){
                 state.index= state.orderList.length-1
             }
+        },
+        deleteorders(state){ //清空购物车
+            state.orderList=[]
         },
         changeSingleTotalPrice(state,{value,index}){
             const {orderList} =  state;
@@ -77,12 +80,20 @@ export default {
         changeindex(state,{index}){
             state.index=index
         },
-        stagingorder(state){
+        stagingorders(state,{name}){ //暂存
             let {storageOrders,orderList} = state;
             if(orderList.length){
-                state.storageOrders.push(orderList)
+                state.storageOrders.push({name,orderList})
                 state.orderList = []
             }
+        },
+        deletestagingorder(state,{index}){
+            state.storageOrders.splice(index,1);
+        },
+        showstagingorder(state,{index}){
+            let {storageOrders,orderList} = state;
+            state.orderList = storageOrders[index].orderList
+            this.commit('deletestagingorder',{index})
         }
     },
     actions:{

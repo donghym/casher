@@ -21,6 +21,7 @@ html,body,#app{
 a{text-decoration: none;}
 .text-center{text-align: center}
 .el-main{height: 100%;padding-bottom: 52px;}
+.hidden{display: none;}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,4 +29,6 @@ a{text-decoration: none;}
   color: #2c3e50;
 }
 .el-input-number{width: 135px;}
+.pointer{cursor: pointer;}
+.visible{height: 0px;overflow: hidden;}
 </style>

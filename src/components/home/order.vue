@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<div class="receipt-container">
-			5555
+			<settlementsheet></settlementsheet>
 	      	<div class="sum-price">
 		        <p>
 		          	<span>共</span><strong>{{computeOrder.goodsNum}} </strong><em>件商品</em>
@@ -54,6 +54,7 @@
 	import {mapGetters} from 'vuex';
 	import refer from './refer'
 	import storage from './storage'
+	import settlementsheet from './settlementsheet'
   	export default {
 	    data() {
 	      return {
@@ -62,7 +63,7 @@
 	      };
 	    },
 	    components:{
-	    	refer,storage
+	    	refer,storage,settlementsheet
 	    },
 	    computed:{
 	        ...mapGetters([
@@ -115,7 +116,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 	header{height:48px;}
-	.wait-container{height: 100%;}
+	.wait-container{height: 100%;position:relative;}
 	.order{padding:0 10px;overflow:auto;}
 	.order-list-title{
 		height: 46px;line-height: 46px;background-color: #fafafa;font-size:14px;font-weight: bold;color: #333;border:#ccc solid 1px;min-width: 1200px;

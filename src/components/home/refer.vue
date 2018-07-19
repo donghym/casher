@@ -1,10 +1,12 @@
 <template>
 	<header class="clearfix">
 		<el-row :gutter="20">
-			<el-col :span="2">
-			    <el-button type="primary" plain size='mini' @click="handdleStaging">暂存</el-button>
+			<el-col :span="5">
+			      <el-input placeholder="请输入姓名" v-model="storagename">
+			      	<el-button type="primary" slot="append" @click="handdleStaging">暂存</el-button>
+				  </el-input>
 			</el-col>
-	  		<el-col :span="3" :offset="13">
+	  		<el-col :span="3" :offset="10">
 	  			<el-form ref="form" label-width="80px">
 				  	<el-form-item label="合并商品">
 				        <el-switch
@@ -29,12 +31,16 @@
 					@keyup.107.native="valueChange(true)"  
 					@keyup.109.native="valueChange(false)"
 					@keyup.110.native="deleteRow"
+					@keyup.111.native="deleteRows"
 					>
 				    <el-button slot="append" icon="el-icon-tickets" @click="showArchives"></el-button>
 				</el-input>
 		  	</el-col>
 		</el-row>
-		<el-dialog title="档案列表" :visible.sync="$store.state.refer.archivesShow">
+		<el-dialog title="档案列表" :visible.sync="$store.state.refer.archivesShow" close-on-press-escape>
+			<el-input ref='focusonly' :autofocus="true" class='visible' 
+				@keyup.13.native="handdleSure"
+			></el-input>
 			<el-table
 			    ref="multipleTable"
 			    tooltip-effect="dark"
@@ -48,6 +54,7 @@
 			    <el-table-column
 			     	fixed
 			      	type="selection"
+			      	 @keyup.enter.native='handdleSure'
 			      	width="40">
 			    </el-table-column>
 			    <el-table-column
@@ -102,7 +109,8 @@
 	    data() {
 	      return {
 	      	productId:'',  // 商品ID
-	      	archivesCurrent:[]
+	      	archivesCurrent:[],
+	      	storagename:''
 	      };
 	    },
 	    methods: {
@@ -114,8 +122,31 @@
 	    		this.productId = ''
 	      		this.$store.commit('deleteorder')
 	    	},
-	    	handdleStaging(){ //暂存文件
-	    		this.$store.commit('stagingorder')
+	    	deleteRows(){
+	    		let {orderList} = this.$store.state.order
+	    		this.productId = ''
+	    		if(!orderList.length) return
+	    		let _this = this;
+    			this.$confirm('此操作将清空当前购物车?', '提示', {
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消',
+		          type: 'warning'
+		        }).then(() => {
+		      		_this.$store.commit('deleteorders')
+		        });
+	    	},
+	    	handdleStaging(){ //暂存订单
+	    		let {orderList} = this.$store.state.order
+	    		if(!orderList.length){
+			        this.$message({
+			          showClose: true,
+			          message: '空购物车是不能暂存的',
+			          type: 'warning'
+			        });
+	    			return false
+	    		}
+	    		this.$store.commit('stagingorders',{name:this.storagename})
+	    		this.storagename = ''
 	    	},
 	    	valueChange(state){
 	    		let {index,orderList} = this.$store.state.order
@@ -173,12 +204,15 @@
 	    	},
 	    	showArchives(){
 	    		this.$store.state.refer.archivesShow=true
+	        	this.focusonly()
 	    	},
 	      	handleSelectionChange(val) {
 	        	this.archivesCurrent = val;
+	        	this.focusonly()
 	      	},
 	      	changeSelectIndex(row){
       		 	this.$refs.multipleTable.toggleRowSelection(row);
+	        	this.focusonly()
 	      	},
 	      	handdleSure(){
 		      	if(!this.archivesCurrent.length){
@@ -201,7 +235,10 @@
 	      		const {refer} = this.$store.state
 	      		refer.archivesShow = false
 				this.$refs.multipleTable.clearSelection();
-	      	}
+	      	},
+	      	focusonly(){
+	        	this.$refs.focusonly.$el.querySelector('input').focus();
+	      	},
 	    },
 	    mounted(){
 	    	this.init()

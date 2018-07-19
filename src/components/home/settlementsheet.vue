@@ -4,7 +4,6 @@
 		  v-for="(orders,index) in $store.state.order.storageOrders" 
 		  :key='index'
 		  @close = "deletestorageorder(index)"
-		  :type='type[index%5]'
 		  closable>
 		  <a @click="openOrder(index)" class="pointer">
 			  {{orders.name||'订单'+(index+1)}}
@@ -13,12 +12,11 @@
 	</footer>
 </template>
 <script>
-  	export default {
-  		name:'storage',
+  	export default { //结算单
+  		name:'settlementsheet',
 	    data() {
 	      return {
-	      	type:['success','','info' ,'warning','danger']
-	      }
+	      };
 	    },
 	    methods: {
 	    	openOrder(index){
