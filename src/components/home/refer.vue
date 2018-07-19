@@ -1,7 +1,10 @@
 <template>
 	<header class="clearfix">
 		<el-row :gutter="20">
-	  		<el-col :span="3" :offset="15">
+			<el-col :span="2">
+			    <el-button type="primary" plain size='mini' @click="handdleStaging">暂存</el-button>
+			</el-col>
+	  		<el-col :span="3" :offset="13">
 	  			<el-form ref="form" label-width="80px">
 				  	<el-form-item label="合并商品">
 				        <el-switch
@@ -110,6 +113,9 @@
 	    	deleteRow(){
 	    		this.productId = ''
 	      		this.$store.commit('deleteorder')
+	    	},
+	    	handdleStaging(){ //暂存文件
+	    		this.$store.commit('stagingorder')
 	    	},
 	    	valueChange(state){
 	    		let {index,orderList} = this.$store.state.order

@@ -4,7 +4,8 @@ export default {
 		orderList: [], //订单列表
 		goodsCategory: [], //订单商品列表里的种类
 		index: 0, //订单列表选中行
-        mergeOrder: false //合并条形码 相同的商品
+        mergeOrder: false, //合并条形码 相同的商品
+        storageOrders:[], //暂存的商品列表
 	},
     getters:{
         computeOrder:(state)=>{
@@ -55,8 +56,11 @@ export default {
         },
         changemarge(state){
             if(state.mergeOrder){
-                let {orderList} = state;
+                let {orderList,index} = state;
                 state.orderList = getNew(orderList)
+                if(_index>state.orderList.length-1){
+                    state.index = state.orderList.length-1
+                }
             }
         },
         deleteorder(state,payload){
@@ -72,6 +76,13 @@ export default {
         },
         changeindex(state,{index}){
             state.index=index
+        },
+        stagingorder(state){
+            let {storageOrders,orderList} = state;
+            if(orderList.length){
+                state.storageOrders.push(orderList)
+                state.orderList = []
+            }
         }
     },
     actions:{

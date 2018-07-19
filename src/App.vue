@@ -20,6 +20,7 @@ html,body,#app{
 .clearfix:after{clear:both;}
 a{text-decoration: none;}
 .text-center{text-align: center}
+.el-main{height: 100%;padding-bottom: 52px;}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
