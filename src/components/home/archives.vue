@@ -363,8 +363,8 @@
     	},
 	    methods: {
 	    	async init(){
-	    		let {data} = await getarchives()
-	    		this.$store.state.refer.archivesList = data
+	    		let archivesData = await getarchives()
+	    		this.$store.state.refer.archivesList = archivesData
 	    	},
 	    	showNewPro(){
 			 	this.$message({
