@@ -26,100 +26,114 @@
 					@keyup.13.native="handdleSure"
 			></el-input>
 		</header>
-		<el-table
-		    ref="multipleTable"
-		    tooltip-effect="dark"
-		    :data="$store.state.refer.archivesList"
-		    border highlight-current-row
-	     	@cell-click="changeProInfo"
-		    size='small'
-		    height='100%'
-		    style="width: 100%">
-		    <el-table-column
-		      type="index">
-		    </el-table-column>
-		    <el-table-column
-		      label="商品ID"
-		      prop="id">
-		    </el-table-column>
-		    <el-table-column
-		      label="商品名称"
-		      prop="name">
-		    </el-table-column>
-		    <el-table-column
-		      label="单价"
-		      prop="price">
-		    </el-table-column>
-		    <el-table-column
-		      label="团购数量"
-		      prop="groupNum">
-		    </el-table-column>
-		    <el-table-column
-		      label="团购价格"
-		      prop="groupPrice">
-		    </el-table-column>
-		    <el-table-column
-		      label="商品分类"
-		      prop="category">
-		    </el-table-column>
-		    <el-table-column
-		      label="商品描述"
-		      prop="desc">
-		    </el-table-column>
-	  	</el-table>
+		<div class="archives-list-container">
+			<el-row class='archives-list-title'>
+				<el-col :span='1' class='text-center'>序号</el-col>			
+				<el-col :span='3'>商品ID</el-col>			
+				<el-col :span='3'>商品名称</el-col>			
+				<el-col :span='3'>单价</el-col>			
+				<el-col :span='3'>团购数量</el-col>			
+				<el-col :span='3'>团购价格</el-col>			
+				<el-col :span='3'>商品分类</el-col>			
+				<el-col :span='5'>商品描述</el-col>			
+			</el-row>
+			<div class="archives-list clearfix pointer">
+				<el-row v-for='(val,index) in $store.state.refer.archivesList' :key='index' @click.stop.native='showProInfo(val,index)'>
+					<el-col :span='1' class='text-center'>{{index+1}}</el-col>			
+					<el-col :span='3'>{{val.id}}</el-col>			
+					<el-col :span='3'>{{val.name}}</el-col>			
+					<el-col :span='3' @click.stop.native='priceindex=index+1'>
+						<el-input 
+							v-model="val.price" size="small" 
+							placeholder="请输入金额" 
+							@change='changeinfo(val,index)' 
+							@blur='priceindex=0'
+							v-if='index+1==priceindex'></el-input>
+						<span v-else>
+							{{val.price}}
+						</span>
+					</el-col>			
+					<el-col :span='3' @click.stop.native='groupNumindex = index+1'>
+					   <el-input-number 
+						   v-model="val.groupNum" size="small"  
+						   v-if='index+1==groupNumindex' :precision="0" :step="1" :min="2" 
+						   @change='changeinfo(val,index)'
+						   @blur='groupNumindex=0'
+						   ></el-input-number>
+						<span v-else>
+							{{val.groupNum}}
+						</span>
+					</el-col>			
+					<el-col :span='3' @click.stop.native='groupPriceindex = index+1'>
+						<el-input 
+							v-model="val.groupPrice" size="small" 
+							placeholder="请输入金额" 
+							@change='changeinfo(val,index)' 
+							@blur='groupPriceindex=0'
+							v-if='index+1==groupPriceindex'></el-input>
+						<span v-else>
+							{{val.groupPrice}}
+						</span>
+					</el-col>			
+					<el-col :span='3'>{{val.category.join()}}</el-col>			
+					<el-col :span='5'>{{val.desc}}</el-col>					
+				</el-row>
+			</div>
+		</div>
 	  	<el-dialog title="新增商品" :visible.sync="dialognewpro">
 			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-				<el-row :gutter="10">
+				<el-row>
 					<el-col :span="12">
 					  	<el-form-item label="商品名称" prop="name">
-					    	<el-input v-model="ruleForm.name"></el-input>
+					    	<el-input v-model="ruleForm.name" size="medium"></el-input>
 					  	</el-form-item>
 					</el-col>
 					<el-col :span="12">
 					  	<el-form-item label="商品编码" prop="id">
-					    	<el-input v-model="ruleForm.id"></el-input>
+					    	<el-input v-model="ruleForm.id" size="medium"></el-input>
 					  	</el-form-item>
 					</el-col>
 				</el-row>
-				<el-row :gutter="10">
-					<el-col :span="8">
+				<el-row>
+					<el-col :span="12">
 					  <el-form-item label="商品单价" prop="price">
-					   <el-input-number v-model="ruleForm.price" :precision="2" :step="0.1" :min="0.01"></el-input-number>
+					   <el-input-number v-model="ruleForm.price" size="medium" :precision="2" :step="0.1" :min="0.01"></el-input-number>
 					  </el-form-item>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="12">
 					  <el-form-item label="团购数量" prop="groupNum">
-					   <el-input-number v-model="ruleForm.groupNum" :precision="0" :step="1" :min="0"></el-input-number>
-					  </el-form-item>
-					</el-col>
-					<el-col :span="8">
-					  <el-form-item label="团购价" prop="groupPrice">
-					   <el-input-number v-model="ruleForm.groupPrice" :precision="2" :step="0.1" :min="0"></el-input-number>
+					   <el-input-number v-model="ruleForm.groupNum" size="medium" :precision="0" :step="1" :min="0"></el-input-number>
 					  </el-form-item>
 					</el-col>
 				</el-row>
-				<el-row :gutter="10">
-					<el-col :span="8">
+				<el-row>
+					<el-col :span="12">
 					  	<el-form-item label="商品分类" prop="category">
 					  		<el-cascader
 							    expand-trigger="hover"
 							    :options="options"
 							    v-model="ruleForm.category"
+						     	size="medium"
 							    @change="handleChange">
 					  		</el-cascader>
 					  	</el-form-item>
 					</el-col>
-					<el-col :span="16">
-					  <el-form-item label="商品描述" prop="desc">
-					    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+					<el-col :span="12">
+					  <el-form-item label="团购价" prop="groupPrice">
+					   <el-input-number v-model="ruleForm.groupPrice" size="medium" :precision="2" :step="0.1" :min="0"></el-input-number>
 					  </el-form-item>
 					</el-col>
 				</el-row>
-				<el-row :gutter="10">
-					<el-col :span="24">
+				<el-row>
+					<el-col :span="15">
+					  <el-form-item label="商品描述" prop="desc">
+					    <el-input type="textarea" size="medium" v-model="ruleForm.desc"></el-input>
+					  </el-form-item>
+					</el-col>
+					<el-col :span="9">
 					  	<el-form-item>
-					    	<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-					    	<el-button @click="resetForm('ruleForm')">重置</el-button>
+					    	<el-button type="primary" size="medium" @click="submitForm('ruleForm')">更改</el-button>
+					    	<el-button size="medium" @click="resetForm('ruleForm')">重置</el-button>
 					  	</el-form-item>
 					</el-col>
 				</el-row>
@@ -134,13 +148,17 @@
 	      	return {
 		      	productId:"",
 		        dialognewpro:false,
+		        currentindex:0,
+		        priceindex:0,
+		        groupNumindex:0,
+		        groupPriceindex:0,
 		        ruleForm: {
 		          name: '',		// 商品名称
 		          id:'',		// 商品ID
 		          price:0,		// 产品单价
 		          groupNum:4,	// 团购数量
 		          groupPrice:0, // 团购价
-		          category:'', 	// 商品分类
+		          category:[], 	// 商品分类
 		          desc: ''		// 商品描述
 		        },
 		        rules: {
@@ -358,7 +376,7 @@
 			        ],
 			        selectedOptions: [],
 			        selectedOptions2: []
-
+ 
 	      	};
     	},
 	    methods: {
@@ -378,9 +396,10 @@
 	      	handleChange(value) {
 	        	console.log(value);
 	      	},
-	    	changeProInfo(row){
+	    	showProInfo(row,index){
 	    	 	Object.assign(this.ruleForm,row)
-		        this.dialognewpro=true
+		        this.dialognewpro = true
+		        this.currentindex = index
 	    	},
 	    	newpro(){
 
@@ -388,8 +407,8 @@
 	      	submitForm(formName) {
 		        this.$refs[formName].validate((valid) => {
 		          if (valid) {
-		            alert('submit!');
-	        		this.$refs[formName].resetFields();
+	      			this.$store.dispatch('CHANGEARCHIVESINFO',{value:this.ruleForm,index:this.currentindex})
+		            this.resetForm(formName)
 	        		this.dialognewpro=false
 		          } else {
 		            console.log('error submit!!');
@@ -400,8 +419,13 @@
 	      	resetForm(formName) {
 		        this.$refs[formName].resetFields();
 		        Object.keys(this.ruleForm).forEach(v=>{
-		        	this.ruleForm[v]=''
+	        		this.ruleForm[v]= (v=='category'?[]:'')
+		        	
 		        })
+	      	},
+	      	changeinfo(value,index){
+	      		this.$store.dispatch('CHANGEARCHIVESINFO',{value,index})
+	      		this.priceindex = 0
 	      	}
 	    },
 	    mounted(){
@@ -411,5 +435,9 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+	.archives{height: 100%;overflow: hidden;}
+	.archives-list-title{border-top:1px solid #CF6611;border-left:1px solid #CF6611;height: 36px;}
+	.archives-list-title div{border-bottom:1px solid #CF6611;border-right:1px solid #CF6611;padding:6px 10px;}
+	.archives-list>div{border-left:1px solid #CF6611;}
+	.archives-list>div>div{border-bottom:1px solid #CF6611;padding: 0 6px;border-right:1px solid #CF6611;height:42px;line-height: 42px;}
 </style>
