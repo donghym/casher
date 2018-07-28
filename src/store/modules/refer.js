@@ -1,4 +1,5 @@
 import {CHANGEARCHIVESINFO} from '../mutation-types'
+import Vue from 'vue'
 export default {
 	state:{
 		archivesShow: false, //展示档案弹窗
@@ -6,11 +7,11 @@ export default {
 	},
     mutations:{
     	[CHANGEARCHIVESINFO](state,{value,index}){
-    		state.archivesList[index]=value
+    		state.archivesList.splice(index,1,value)
     	}
     },
     actions:{
-    	async [CHANGEARCHIVESINFO]({commit},payload){
+    	[CHANGEARCHIVESINFO]({commit},payload){
     		// let data = await getdata()
     		// 提交更新的数据
     		commit('CHANGEARCHIVESINFO',payload)

@@ -174,7 +174,7 @@
 		            { required: true, message: '请输入商品单价', trigger: 'blur' }
 		          ],
 		          category:[
-		            { required: true, message: '请选择商品分类', trigger: 'change' }
+		            { required: true, message: '请选择商品分类', trigger: 'blur' }
 		          ],
 		        },
 		         options: [
@@ -389,15 +389,18 @@
 		          	message: '需要先验证是不是已经录入了',
 		          	type: 'warning'
 		        });
+		       // 如果已有该商品档案 将该商品档案的信息调出
+		       // 如没有 走下面的逻辑
 	    		this.ruleForm.id = this.productId
-	    		this.productId=''
+	    		this.productId = ''
 		        this.dialognewpro=true
+		       	this.resetForm(true);
 	    	},
 	      	handleChange(value) {
 	        	console.log(value);
 	      	},
 	    	showProInfo(row,index){
-	    	 	Object.assign(this.ruleForm,row)
+	    		this.ruleForm = JSON.parse(JSON.stringify(row))
 		        this.dialognewpro = true
 		        this.currentindex = index
 	    	},
@@ -405,10 +408,10 @@
 
 	    	},
 	      	submitForm(formName) {
+	      		let _this = this;
 		        this.$refs[formName].validate((valid) => {
 		          if (valid) {
-	      			this.$store.dispatch('CHANGEARCHIVESINFO',{value:this.ruleForm,index:this.currentindex})
-		            this.resetForm(formName)
+	      			_this.$store.dispatch('CHANGEARCHIVESINFO',{value:_this.ruleForm,index:_this.currentindex})
 	        		this.dialognewpro=false
 		          } else {
 		            console.log('error submit!!');
@@ -416,12 +419,14 @@
 		          }
 		        });
 	      	},
-	      	resetForm(formName) {
-		        this.$refs[formName].resetFields();
+	      	resetForm(add) {
+	      		if(!add){ //新增商品
+			        this.$refs['ruleForm'].resetFields();
+	      		}
 		        Object.keys(this.ruleForm).forEach(v=>{
 	        		this.ruleForm[v]= (v=='category'?[]:'')
-		        	
 		        })
+	    		this.currentindex = -1;
 	      	},
 	      	changeinfo(value,index){
 	      		this.$store.dispatch('CHANGEARCHIVESINFO',{value,index})
@@ -436,8 +441,8 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 	.archives{height: 100%;overflow: hidden;}
-	.archives-list-title{border-top:1px solid #CF6611;border-left:1px solid #CF6611;height: 36px;}
-	.archives-list-title div{border-bottom:1px solid #CF6611;border-right:1px solid #CF6611;padding:6px 10px;}
-	.archives-list>div{border-left:1px solid #CF6611;}
-	.archives-list>div>div{border-bottom:1px solid #CF6611;padding: 0 6px;border-right:1px solid #CF6611;height:42px;line-height: 42px;}
+	.archives-list-title{border-top:1px solid #8421F5;border-left:1px solid #8421F5;height: 36px;}
+	.archives-list-title div{border-bottom:1px solid #8421F5;border-right:1px solid #8421F5;padding:6px 10px;}
+	.archives-list>div{border-left:1px solid #8421F5;}
+	.archives-list>div>div{border-bottom:1px solid #8421F5;padding: 0 6px;border-right:1px solid #8421F5;height:42px;line-height: 42px;}
 </style>
