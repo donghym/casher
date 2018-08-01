@@ -23,7 +23,7 @@
 			  	</el-col>
 			</el-row>
 			<el-input ref='focusonly' :autofocus="true" class='visible' 
-					@keyup.13.native="handdleSure"
+				@keyup.13.native="handdleSure"
 			></el-input>
 		</header>
 		<div class="archives-list-container">
@@ -96,14 +96,14 @@
 				</el-row>
 				<el-row>
 					<el-col :span="12">
-					  <el-form-item label="商品单价" prop="price">
-					   <el-input-number v-model="ruleForm.price" size="medium" :precision="2" :step="0.1" :min="0.01"></el-input-number>
-					  </el-form-item>
+					  	<el-form-item label="商品单价" prop="price">
+					   		<el-input-number v-model="ruleForm.price" size="medium" :precision="2" :step="1" :min="0.01"></el-input-number>
+					  	</el-form-item>
 					</el-col>
 					<el-col :span="12">
-					  <el-form-item label="团购数量" prop="groupNum">
-					   <el-input-number v-model="ruleForm.groupNum" size="medium" :precision="0" :step="1" :min="0"></el-input-number>
-					  </el-form-item>
+					  	<el-form-item label="团购数量" prop="groupNum">
+					   		<el-input-number v-model="ruleForm.groupNum" size="medium" :precision="0" :step="1" :min="0"></el-input-number>
+					  	</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
@@ -376,7 +376,6 @@
 			        ],
 			        selectedOptions: [],
 			        selectedOptions2: []
- 
 	      	};
     	},
 	    methods: {
@@ -389,11 +388,11 @@
 		          	message: '需要先验证是不是已经录入了',
 		          	type: 'warning'
 		        });
-		       // 如果已有该商品档案 将该商品档案的信息调出
-		       // 如没有 走下面的逻辑
+		       	// 如果已有该商品档案 将该商品档案的信息调出
+		       	// 如没有 走下面的逻辑
 	    		this.ruleForm.id = this.productId
 	    		this.productId = ''
-		        this.dialognewpro=true
+		        this.dialognewpro = true
 		       	this.resetForm(true);
 	    	},
 	      	handleChange(value) {
@@ -410,13 +409,13 @@
 	      	submitForm(formName) {
 	      		let _this = this;
 		        this.$refs[formName].validate((valid) => {
-		          if (valid) {
-	      			_this.$store.dispatch('CHANGEARCHIVESINFO',{value:_this.ruleForm,index:_this.currentindex})
-	        		this.dialognewpro=false
-		          } else {
-		            console.log('error submit!!');
-		            return false;
-		          }
+		          	if (valid) {
+		      			_this.$store.dispatch('CHANGEARCHIVESINFO',{value:_this.ruleForm,index:_this.currentindex})
+		        		this.dialognewpro = false
+		          	} else {
+			            console.log('error submit!!');
+			            return false;
+		          	}
 		        });
 	      	},
 	      	resetForm(add) {

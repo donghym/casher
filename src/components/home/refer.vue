@@ -32,6 +32,7 @@
 					@keyup.109.native="valueChange(false)"
 					@keyup.110.native="deleteRow"
 					@keyup.111.native="deleteRows"
+					@keyup.enter.ctrl.native="count"
 					>
 				    <el-button slot="append" icon="el-icon-tickets" @click="showArchives"></el-button>
 				</el-input>
@@ -177,20 +178,26 @@
 	    		}	
 	    		this.$store.commit('changeindex',{index})
 	    	},
+	    	count(){
+	    		let {orderList} = this.$store.state.order
+	    		if(!this.productId && orderList.length){
+	    			console.log('结算 ctrl+enter')
+	    		}
+	    	},
 	    	changemarge(value){
 	    		if(value){
 	    			this.$store.commit('changemarge')
 	    		}
 	    	},
 	    	productIdenter(){
-	    		const isNum = (num)=> /^\d+$/.test(num)
-	    		const isMultiplication = (num) => /^\*(\d+)$/.test(num)
 	    		let productId = this.productId
-	    		if(isNum(productId)){
+	    		if(productId.length>0 && productId[0]==='0' && productId.length>0){
+
+	    			// 如果第一位是0
+	    		}else if(isNum(productId)){ // 正常的条形码
 	    			console.log('检测条码')
-	    			// 正常的条形码
 	    		}else if(isMultiplication(this.productId)){
-		    		let {index,orderList} = this.$store.state.refer
+		    		let {index,orderList} = this.$store.state.order
 		    		if(!orderList.length){
 		    			return false
 		    		}
@@ -244,6 +251,8 @@
 	    	this.init()
 	    }
   	}
+	const isNum = (num)=> /^\d+$/.test(num)
+	const isMultiplication = (num) => /^\*(\d+)$/.test(num)
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

@@ -1,11 +1,12 @@
 import {CHANGEORDERNUMBER,ADDGOODSTOORDER} from '../mutation-types'
 export default {
 	state:{
-		orderList: [], //订单列表
-		goodsCategory: [], //订单商品列表里的种类
-		index: 0, //订单列表选中行
-        mergeOrder: false, //合并条形码 相同的商品
-        storageOrders:[], //暂存的商品列表
+		orderList: [], // 订单列表
+        countList: [], // 计算列表
+		goodsCategory: [], // 订单商品列表里的种类
+		index: 0, // 订单列表选中行
+        mergeOrder: false, // 合并条形码 相同的商品
+        storageOrders: [], // 暂存的商品列表
 	},
     getters:{
         computeOrder:(state)=>{
