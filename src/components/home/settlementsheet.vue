@@ -28,6 +28,7 @@
   	export default { //结算单
   		name:'settlementsheet',
 	    data() {
+	    	return {}
 	    },
 	    methods: {
 	    },

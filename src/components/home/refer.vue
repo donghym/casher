@@ -34,7 +34,7 @@
 					@keyup.111.native="deleteRows"
 					@keyup.enter.ctrl.native="count"
 					>
-				    <el-button slot="append" icon="el-icon-tickets" @click="showArchives"></el-button>
+				    <el-button slot="append" icon="el-icon-tickets" @click.native="showArchives"></el-button>
 				</el-input>
 		  	</el-col>
 		</el-row>
@@ -115,13 +115,16 @@
 	      };
 	    },
 	    methods: {
-	    	async init(){
-	    		let archivesData = await getarchives()
-	    		this.$store.state.refer.archivesList = archivesData
+	    	async init(){// 请求数据
+	    		this.$store.dispatch('GETARCHIVESINFO')
 	    	},
 	    	deleteRow(){
-	    		this.productId = ''
-	      		this.$store.commit('deleteorder')
+	    		if(this.productId.length===1 || this.productId=='..'){
+		    		this.productId = ''
+		      		this.$store.commit('deleteorder')
+	    		}else{
+	    			return false
+	    		}
 	    	},
 	    	deleteRows(){
 	    		let {orderList} = this.$store.state.order
@@ -154,8 +157,6 @@
 	    		if(!orderList.length){
 	    			return false
 	    		}
-	    		// let productId = this.productId;
-	    		// this.productId =productId.substring(0,productId.Length-1)
 	    		this.productId = ''
 	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
 	      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value})
@@ -181,7 +182,7 @@
 	    	count(){
 	    		let {orderList} = this.$store.state.order
 	    		if(!this.productId && orderList.length){
-	    			console.log('结算 ctrl+enter')
+					this.$store.commit('togglecountorder',{show:true})
 	    		}
 	    	},
 	    	changemarge(value){
@@ -191,10 +192,11 @@
 	    	},
 	    	productIdenter(){
 	    		let productId = this.productId
-	    		if(productId.length>0 && productId[0]==='0' && productId.length>0){
+	    		if(productId && productId[0]==='0' && productId.length>0){
 
 	    			// 如果第一位是0
 	    		}else if(isNum(productId)){ // 正常的条形码
+
 	    			console.log('检测条码')
 	    		}else if(isMultiplication(this.productId)){
 		    		let {index,orderList} = this.$store.state.order
@@ -204,14 +206,18 @@
 		    		let _value = this.productId;
 		    		_value=_value.substr(1,_value.length-1);
 		      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:Number(_value)})
-	    		}else{
-
+	    		}else if(isadd(this.productId)){
+	    			let ordernum = Number(this.productId.match(/\aa(\S*)/)[1])
+	    			if(!ordernum){
+	    				this.$message.error('请输入金额');
+	    			}else{
+	    				this.$store.commit('addorder',{ordernum:ordernum})
+	    			}
 	    		}
     			this.productId=null
 	    	},
 	    	showArchives(){
 	    		this.$store.state.refer.archivesShow=true
-	        	this.focusonly()
 	    	},
 	      	handleSelectionChange(val) {
 	        	this.archivesCurrent = val;
@@ -235,16 +241,18 @@
 		      		return v
 		      	})
 	    		this.$store.commit('ADDGOODSTOORDER',{orderList:JSON.parse(JSON.stringify(this.archivesCurrent))})
-	        	this.$refs.barcode.$el.querySelector('input').focus();
 	      		this.handdleCancel()
 	     	},
 	      	handdleCancel(){
 	      		const {refer} = this.$store.state
 	      		refer.archivesShow = false
 				this.$refs.multipleTable.clearSelection();
+				this.focusonly()
 	      	},
 	      	focusonly(){
-	        	this.$refs.focusonly.$el.querySelector('input').focus();
+	      		 this.$nextTick(()=>{
+		          this.$refs.focusonly.$el.querySelector('input').focus();
+		        });
 	      	},
 	    },
 	    mounted(){
@@ -253,10 +261,11 @@
   	}
 	const isNum = (num)=> /^\d+$/.test(num)
 	const isMultiplication = (num) => /^\*(\d+)$/.test(num)
+	const isadd = (num)=>/aa/.test(num)
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-	header{height:48px;overflow: hidden;}
+	header{height:48px;overflow: hidden;padding:0 5px;}
 	.el-dialog__body{padding: 0 10px 10px}
 	.el-table__body tr.current-row>td{background-color: #ff00ff;}
 	.page{padding-bottom: 10px;}

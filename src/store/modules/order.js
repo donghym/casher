@@ -1,8 +1,9 @@
 import {CHANGEORDERNUMBER,ADDGOODSTOORDER} from '../mutation-types'
 export default {
 	state:{
+        dialogcountorder: false, // 结算订单弹窗
 		orderList: [], // 订单列表
-        countList: [], // 计算列表
+        neworder: 1, // 计算列表
 		goodsCategory: [], // 订单商品列表里的种类
 		index: 0, // 订单列表选中行
         mergeOrder: false, // 合并条形码 相同的商品
@@ -55,6 +56,23 @@ export default {
                 currentOrder.singletotalprice = (currentOrder.price*value).toFixed(2)
             }
         },
+        addorder(state,{ordernum}){
+            ordernum = ordernum.toFixed(2)
+            state.orderList.push({
+                "id": (1000000000+state.neworder),
+                "name": "自定义商品-"+state.neworder,
+                "category":['自定义商品-'+state.neworder],
+                "desc": "自定义商品描述",
+                "address": "自定义商家地址",
+                "groupNum": 1,
+                "orderNum":1,
+                "singletotalprice": ordernum,
+                "price": ordernum,
+                "totalNum": 98,
+                "groupPrice": ordernum
+            })
+            state.neworder++
+        },
         changemarge(state){
             if(state.mergeOrder){
                 let {orderList,index} = state;
@@ -67,7 +85,7 @@ export default {
         deleteorder(state,payload){//删除当前选中商品
             state.orderList.splice(payload?payload.index:state.index,1)
             let {index,orderList} = state
-            if(index>=state.orderList.length-1){
+            if(index>state.orderList.length-1){
                 state.index= state.orderList.length-1
             }
         },
@@ -95,7 +113,14 @@ export default {
             let {storageOrders,orderList} = state;
             state.orderList = storageOrders[index].orderList
             this.commit('deletestagingorder',{index})
+        },
+        ordercount(state){
+            this.$store.commit('deleteorders')
+        },
+        togglecountorder(state,{show}){
+            state.dialogcountorder = show
         }
+
     },
     actions:{
     }

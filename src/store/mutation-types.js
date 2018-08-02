@@ -1,3 +1,4 @@
+export const GETARCHIVESINFO = 'GETARCHIVESINFO' // 获取档案信息
 export const CHANGEORDERNUMBER = 'CHANGEORDERNUMBER' // 订单单品总价
 export const ADDGOODSTOORDER = 'ADDGOODSTOORDER' // 增加订单商品
 export const CHANGEARCHIVESINFO = 'CHANGEARCHIVESINFO' // 更改商品档案信息

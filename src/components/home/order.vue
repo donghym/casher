@@ -4,7 +4,7 @@
 			<refer></refer>
 			<div class="order" :style="'height:'+orderheight+'px'">
 				<el-row :gutter="10" class='order-list-title'>
-				  	<el-col :span="1"><div>序号</div></el-col>
+				  	<el-col :span="1"><div class="text-center">序号</div></el-col>
 				  	<el-col :span="2"><div>商品编码</div></el-col>
 				  	<el-col :span="3"><div>商品名称</div></el-col>
 				  	<el-col :span="2"><div>单品价格</div></el-col>
@@ -16,7 +16,7 @@
 				</el-row>
 				<div class='order-list clearfix'>
 					<el-row :gutter="10" v-for="(item, index) in $store.state.order.orderList"  :class="{ 'order-list-con':true, 'on':($store.state.order.index==index)}" :key='index' @click.native='changeIndex(index)'>
-					  	<el-col :span="1"><div>{{index+1}}</div></el-col>
+					  	<el-col :span="1"><div class="text-center">{{index+1}}</div></el-col>
 					  	<el-col :span="2"><div>{{item.id}}</div></el-col>
 					  	<el-col :span="3"><div>{{item.name}}</div></el-col>
 				  		<el-col :span="2"><div>{{item.price}}</div></el-col>
@@ -41,13 +41,31 @@
 		        <p>
 		          	<span>共</span><strong>{{computeOrder.goodsNum}} </strong><em>件商品</em>
 		          	<span>商品总价 </span><strong>{{computeOrder.goodsPrice}} 元</strong>
-		          	<a>结算</a>
+		          	<a @click='showcountorder'>结算</a>
 		        </p>
 	       	</div>
 		</div>
-		<div>
-			<storage/>
-		</div>
+		<storage/>
+		<el-dialog title="结算" :visible.sync="$store.state.order.dialogcountorder" close-on-press-escape>
+			<div class="count-order">
+				<el-row>
+				  	<el-col :span="12">
+				  		现金
+				  	</el-col>
+				  	<el-col :span="12">
+					  支付宝
+					</el-col>
+				</el-row>
+				<el-row>
+					<el-col :span="12">
+						微信
+					</el-col>
+					<el-col :span="12">
+						<el-button type="danger" @click='closecountorder'>取消</el-button>
+					</el-col>
+				</el-row>
+			</div>
+		</el-dialog>
 	</div>
 </template>
 <script>
@@ -76,7 +94,7 @@
 	        	return (() => {
 	          		window.fullHeight = document.documentElement.clientHeight
 	          		that.fullHeight = window.fullHeight
-	          		that.orderheight=window.fullHeight-180
+	          		that.orderheight = window.fullHeight-180
 	        	})()
 	      	}
 	    },
@@ -103,11 +121,16 @@
 	      		this.$store.state.order.index=index
 	      	},
 	      	changeOrderNum(value,index){
-	      		// debugger
 	      		this.$store.commit('CHANGEORDERNUMBER',{index,value})
 	      	},
 	      	handleResize (event) {
 				this.fullHeight = document.documentElement.clientHeight
+			},
+			showcountorder(){
+				this.$store.commit('togglecountorder',{show:true})
+			},
+			closecountorder(){
+				this.$store.commit('togglecountorder',{show:false})
 			}
 	    }
 

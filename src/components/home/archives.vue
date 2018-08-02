@@ -54,7 +54,7 @@
 						</span>
 					</el-col>			
 					<el-col :span='3' @click.stop.native='groupNumindex = index+1'>
-					   <el-input-number 
+					   	<el-input-number 
 						   v-model="val.groupNum" size="small"  
 						   v-if='index+1==groupNumindex' :precision="0" :step="1" :min="2" 
 						   @change='changeinfo(val,index)'
