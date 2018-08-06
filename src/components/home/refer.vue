@@ -192,11 +192,9 @@
 	    	},
 	    	productIdenter(){
 	    		let productId = this.productId
-	    		if(productId && productId[0]==='0' && productId.length>0){
-
-	    			// 如果第一位是0
+	    		if(productId && productId[0]==='0' && productId.length>0){// 如果第一位是0
+    				this.$store.commit('addorder',{ordernum:Number(ordernum)})
 	    		}else if(isNum(productId)){ // 正常的条形码
-
 	    			console.log('检测条码')
 	    		}else if(isMultiplication(this.productId)){
 		    		let {index,orderList} = this.$store.state.order
