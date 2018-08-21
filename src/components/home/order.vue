@@ -1,6 +1,6 @@
 <template>
 	<div class="wait-container">
-		<div class="order-container">
+		<div class="order-container" ref='orders'>
 			<refer></refer>
 			<div class="order" :style="'height:'+orderheight+'px'">
 				<el-row :gutter="10" class='order-list-title'>
@@ -131,7 +131,57 @@
 			},
 			closecountorder(){
 				this.$store.commit('togglecountorder',{show:false})
+			},
+			handlekeyup(event){
+	    		let {index,orderList} = this.$store.state.order;
+	    		let _value = orderList[index].orderNum;
+				switch (event.keyCode){
+					case 38:
+    					index--
+			    		if(index<0) {
+			    			index=0 
+			    			return false
+			    		}
+			    		if(index>orderList.length-1){
+			    			index=orderList.length-1
+			    			return false
+			    		}	
+			    		this.$store.commit('changeindex',{index})
+					break;
+					case 40:
+    					index++
+			    		if(index>orderList.length-1){
+			    			index=orderList.length-1
+			    			return false
+			    		}	
+			    		this.$store.commit('changeindex',{index})
+					break;
+					case 37:
+					case 109:
+			    		if(!orderList.length){
+			    			return false
+			    		}
+			    		this.productId = ''
+			      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value-1})
+			        	this.$refs.barcode.$el.querySelector('input').focus();
+					break;
+					case 39:
+					case 107:
+			    		if(!orderList.length){
+			    			return false
+			    		}
+			    		this.productId = ''
+			      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value+1})
+					break;
+					default:
+				}
 			}
+	    },
+	    created(){
+	    	document.body.addEventListener('keyup',this.handlekeyup,false)
+	    },
+	    beforeDestroy(){
+	    	document.body.removeEventListener('keyup',this.handlekeyup,false)
 	    }
 
  	}

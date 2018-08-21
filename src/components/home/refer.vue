@@ -24,12 +24,6 @@
 					placeholder="请输入条形码" ref='barcode' v-model="productId"
 					class="input-with-select" clearable  :autofocus="true"  
 					@keyup.13.native="productIdenter"
-					@keyup.37.native="valueChange(false)"
-					@keyup.38.native="keyup(38)"
-					@keyup.39.native="valueChange(true)"
-					@keyup.40.native="keyup(40)"
-					@keyup.107.native="valueChange(true)"  
-					@keyup.109.native="valueChange(false)"
 					@keyup.110.native="deleteRow"
 					@keyup.111.native="deleteRows"
 					@keyup.enter.ctrl.native="count"
@@ -38,7 +32,7 @@
 				</el-input>
 		  	</el-col>
 		</el-row>
-		<el-dialog title="档案列表" :visible.sync="$store.state.refer.archivesShow" close-on-press-escape>
+		<el-dialog title="档案列表" ref='archiveslist' :visible.sync="$store.state.refer.archivesShow" close-on-press-escape>
 			<el-input ref='focusonly' :autofocus="true" class='visible' 
 				@keyup.13.native="handdleSure"
 			></el-input>
@@ -55,7 +49,7 @@
 			    <el-table-column
 			     	fixed
 			      	type="selection"
-			      	 @keyup.enter.native='handdleSure'
+			      	@keyup.enter.native='handdleSure'
 			      	width="40">
 			    </el-table-column>
 			    <el-table-column
@@ -152,33 +146,6 @@
 	    		this.$store.commit('stagingorders',{name:this.storagename})
 	    		this.storagename = ''
 	    	},
-	    	valueChange(state){
-	    		let {index,orderList} = this.$store.state.order
-	    		if(!orderList.length){
-	    			return false
-	    		}
-	    		this.productId = ''
-	    		let _value = state ? orderList[index].orderNum+1 : orderList[index].orderNum-1 
-	      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value})
-	        	this.$refs.barcode.$el.querySelector('input').focus();
-	    	},
-	    	keyup(key){
-	    		let {index,orderList} = this.$store.state.order
-	    		if(key===38){
-    				index--
-    			}else if(key===40){
-    				index++
-    			}
-	    		if(index<0) {
-	    			index=0 
-	    			return false
-	    		}
-	    		if(index>orderList.length-1){
-	    			index=orderList.length-1
-	    			return false
-	    		}	
-	    		this.$store.commit('changeindex',{index})
-	    	},
 	    	count(){
 	    		let {orderList} = this.$store.state.order
 	    		if(!this.productId && orderList.length){
@@ -251,7 +218,7 @@
 	      		 this.$nextTick(()=>{
 		          this.$refs.focusonly.$el.querySelector('input').focus();
 		        });
-	      	},
+	      	}
 	    },
 	    mounted(){
 	    	this.init()
