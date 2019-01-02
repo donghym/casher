@@ -163,7 +163,6 @@
 			    		}
 			    		this.productId = ''
 			      		this.$store.commit('CHANGEORDERNUMBER',{index:index,value:_value-1})
-			        	this.$refs.barcode.$el.querySelector('input').focus();
 					break;
 					case 39:
 					case 107:
