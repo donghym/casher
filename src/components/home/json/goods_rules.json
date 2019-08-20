@@ -1,0 +1,32 @@
+ {
+   "name": [{
+     "required": true,
+     "message": "请输入商品名称",
+     "trigger": "blur"
+   }, {
+     "min": 3,
+     "max": 10,
+     "message": "长度在 3 到 10 个字符",
+     "trigger": "blur"
+   }],
+   "id": [{
+     "required": true,
+     "message": "请输入商品编码",
+     "trigger": "blur"
+   }, {
+     "min": 5,
+     "max": 20,
+     "message": "长度在 5 到 20 个字符",
+     "trigger": "blur"
+   }],
+   "price": [{
+     "required": true,
+     "message": "请输入商品单价",
+     "trigger": "blur"
+   }],
+   "category": [{
+     "required": true,
+     "message": "请选择商品分类",
+     "trigger": "blur"
+   }]
+ }

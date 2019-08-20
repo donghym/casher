@@ -191,11 +191,11 @@
 	.wait-container{height: 100%;position:relative;}
 	.order{padding:0 10px;overflow:auto;}
 	.order-list-title{
-		height: 46px;line-height: 46px;background-color: #fafafa;font-size:14px;font-weight: bold;color: #333;border:#ccc solid 1px;min-width: 1200px;
+		height: 46px;line-height: 46px;font-size:14px;font-weight: bold;color: #333;border:#FFCC00 solid 1px;min-width: 1200px;
 	}
-	.order-list-title>div:not(:last-child){border-right:solid 1px #ccc;}
-	.order-list-con{height: 50px;line-height: 50px;background-color: #f1f1f1;border:#ccc solid 1px;font-size: 14px; border-top: none;min-width: 1200px;}
-	.order-list-con>div:not(:last-child){border-right:solid 1px #ccc;}
+	.order-list-title>div:not(:last-child){border-right:solid 1px #FFCC00;}
+	.order-list-con{height: 50px;line-height: 50px;border:#FFCC00 solid 1px;font-size: 14px; border-top: none;min-width: 1200px;}
+	.order-list-con>div:not(:last-child){border-right:solid 1px #FFCC00;}
 	.order-list-con:hover,.order-list-con.on{background-color: #409EFF;color: #fff;font-weight: bold;}
 	.operate{cursor: pointer}
 	.order-container{width:75%;float: left;height: 100%;}

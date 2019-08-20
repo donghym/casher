@@ -9,13 +9,7 @@
 	  		<el-col :span="3" :offset="10">
 	  			<el-form ref="form" label-width="80px">
 				  	<el-form-item label="合并商品">
-				        <el-switch
-				          	v-model='$store.state.order.mergeOrder'
-				          	active-color="#13ce66"
-				          	inactive-color="#ff4949"
-				          	@change="changemarge"
-				          	>
-				        </el-switch>
+				        <el-switch v-model='$store.state.order.mergeOrder'active-color="#13ce66"inactive-color="#ff4949"@change="changemarge"> </el-switch>
 				 	</el-form-item>
 			 	</el-form>
 		  	</el-col>
@@ -33,9 +27,7 @@
 		  	</el-col>
 		</el-row>
 		<el-dialog title="档案列表" ref='archiveslist' :visible.sync="$store.state.refer.archivesShow" close-on-press-escape>
-			<el-input ref='focusonly' :autofocus="true" class='visible' 
-				@keyup.13.native="handdleSure"
-			></el-input>
+			<el-input ref='focusonly' :autofocus="true" class='visible'@keyup.13.native="handdleSure"></el-input> 
 			<el-table
 			    ref="multipleTable"
 			    tooltip-effect="dark"
@@ -46,51 +38,18 @@
 			    size='small'
 			    max-height='300'
 			    style="width: 100%">
-			    <el-table-column
-			     	fixed
-			      	type="selection"
-			      	@keyup.enter.native='handdleSure'
-			      	width="40">
-			    </el-table-column>
-			    <el-table-column
-			      type="index">
-			    </el-table-column>
-			    <el-table-column
-			      label="商品ID"
-			      prop="id">
-			    </el-table-column>
-			    <el-table-column
-			      label="商品名称"
-			      prop="name">
-			    </el-table-column>
-			    <el-table-column
-			      label="单价"
-			      prop="price">
-			    </el-table-column>
-			    <el-table-column
-			      label="团购数量"
-			      prop="groupNum">
-			    </el-table-column>
-			    <el-table-column
-			      label="团购价格"
-			      prop="groupPrice">
-			    </el-table-column>
-			    <el-table-column
-			      label="商品分类"
-			      prop="category">
-			    </el-table-column>
-			    <el-table-column
-			      label="商品描述"
-			      prop="desc">
-			    </el-table-column>
+			    <el-table-column fixed type="selection"@keyup.enter.native='handdleSure'width="40"> </el-table-column>
+			    <el-table-column type="index"> </el-table-column>
+			    <el-table-column label="商品ID"prop="id"> </el-table-column>
+			    <el-table-column label="商品名称"prop="name"> </el-table-column>
+			    <el-table-column label="单价"prop="price"> </el-table-column>
+			    <el-table-column label="团购数量"prop="groupNum"> </el-table-column>
+			    <el-table-column label="团购价格"prop="groupPrice"> </el-table-column>
+			    <el-table-column label="商品分类"prop="category"> </el-table-column>
+			    <el-table-column label="商品描述"prop="desc"> </el-table-column>
 		  	</el-table>
 			<div slot="footer" class="dialog-footer">
-				<el-pagination
-				  background
-				  layout="prev, pager, next"
-				  class="page"
-				  :total="1000">
-				</el-pagination>
+				<el-pagination background layout="prev, pager, next"class="page":total="1000"> </el-pagination>
 		    	<el-button @click='handdleCancel'>取消</el-button>
 			    <el-button type="primary" @click="handdleSure">确定</el-button>
 			</div>

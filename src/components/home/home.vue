@@ -80,7 +80,7 @@
 .logo{height: 60px;border-bottom: solid 1px #ccc;display: flex;align-items: center;justify-content: center;}
 .el-header{background-color: #B3C0D1;color: #333;}
 .el-aside{color: #333;}
-.el-main{background-color: #f9f9f9;color: #333;}
+.el-main{background-color:#FFFFF7;color: #333;}
 #app>.el-container{height: 100%;overflow: hidden;}
 .el-menu-vertical-demo:not(.el-menu--collapse){overflow:hidden;}
 .comm-right{height: 52px;border: 1px solid #f0f0f0;color: #999;}

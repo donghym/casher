@@ -47,5 +47,5 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 footer{height: 52px;position: absolute;bottom:-52px;left: 0;width: 75%;padding: 10px 20px;}
-
+footer>span{margin-right: 10px;}
 </style>

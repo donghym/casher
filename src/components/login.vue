@@ -22,6 +22,7 @@
   </div>
 </template>
 <script>
+  import {login} from '../service/getdata.js'
   export default {
     data() {
       let checkUsername = (rule, value, callback) => {
@@ -54,11 +55,16 @@
       };
     },
     methods: {
+      async Login(json){
+        let data = await login(json);
+        console.log(data)
+      },
       submitForm(formName) {
       	let _this = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-          	_this.$router.push('home')
+            this.Login(this.ruleForm)
+          	// _this.$router.push('home')
           } else {
             console.log('error submit!!');
             return false;
