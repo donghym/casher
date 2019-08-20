@@ -11,6 +11,7 @@ Vue.use(ElementUI);
 Vue.use(Vuex);
 Vue.config.productionTip = false
 import 'es6-promise/auto'
+// 测试git
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
